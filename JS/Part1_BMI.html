@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bài 1: So sánh BMI</title>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Tính & So Sánh BMI</h2>
+
+      <h3>Thông tin Mark</h3>
+      <div class="input-group">
+        <label>Cân nặng (kg):</label>
+        <input type="number" id="massMark" />
+      </div>
+      <div class="input-group">
+        <label>Chiều cao (m):</label>
+        <input type="number" id="heightMark" />
+      </div>
+
+      <h3>Thông tin John</h3>
+      <div class="input-group">
+        <label>Cân nặng (kg):</label>
+        <input type="number" id="massJohn" />
+      </div>
+      <div class="input-group">
+        <label>Chiều cao (m):</label>
+        <input type="number" id="heightJohn" />
+      </div>
+
+      <button onclick="calculateBMI()">Tính toán</button>
+      <div id="result">Kết quả:</div>
+    </div>
+
+    <script>
+      function calculateBMI() {
+        const massMark = parseFloat(document.getElementById("massMark").value);
+        const heightMark = parseFloat(
+          document.getElementById("heightMark").value,
+        );
+        const massJohn = parseFloat(document.getElementById("massJohn").value);
+        const heightJohn = parseFloat(
+          document.getElementById("heightJohn").value,
+        );
+
+        const bmiMark = massMark / heightMark ** 2;
+        const bmiJohn = massJohn / heightJohn ** 2;
+
+        const mark = { fullName: "Mark Miller", bmi: bmiMark };
+        const john = { fullName: "John Smith", bmi: bmiJohn };
+
+        let output = `Mark's BMI: ${bmiMark.toFixed(2)}\nJohn's BMI: ${bmiJohn.toFixed(2)}\n\n`;
+
+        if (mark.bmi > john.bmi) {
+          output += ` ${mark.fullName}'s BMI (${mark.bmi.toFixed(2)}) is higher than ${john.fullName}'s (${john.bmi.toFixed(2)})!`;
+        } else if (john.bmi > mark.bmi) {
+          output += ` ${john.fullName}'s BMI (${john.bmi.toFixed(2)}) is higher than ${mark.fullName}'s (${mark.bmi.toFixed(2)})!`;
+        } else {
+          output += ` Hai người có chỉ số BMI bằng nhau!`;
+        }
+
+        document.getElementById("result").innerText = output;
+      }
+    </script>
+  </body>
+</html>

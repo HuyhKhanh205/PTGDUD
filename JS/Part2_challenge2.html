@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Part 2 - Challenge #2: Arrays</title>
+  </head>
+  <body>
+    <div class="terminal">
+      <h2>Challenge #2: Mảng & Hàm</h2>
+      <p>Nhập các hóa đơn (cách nhau bởi dấu phẩy):</p>
+      <input type="text" id="billsInput" value="125, 555, 44" />
+      <button onclick="processArrays()">RUN</button>
+
+      <div id="logArea"></div>
+    </div>
+
+    <script>
+      const calcTip = function (bill) {
+        return bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
+      };
+
+      function processArrays() {
+        const input = document.getElementById("billsInput").value;
+        const bills = input.split(",").map(Number);
+
+        const tips = bills.map((bill) => calcTip(bill));
+        const totals = bills.map((bill, i) => bill + tips[i]);
+
+        document.getElementById("logArea").innerText =
+          `Bills:  [${bills.join(", ")}]\n` +
+          `Tips:   [${tips.join(", ")}]\n` +
+          `Totals: [${totals.join(", ")}]`;
+      }
+    </script>
+  </body>
+</html>

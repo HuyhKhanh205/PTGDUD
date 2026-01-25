@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Part 1 - Challenge #4: Tip Calculator</title>
+  </head>
+  <body>
+    <div class="box">
+      <h2>Challenge #4: Tip 3 Ngôi</h2>
+      <input type="number" id="bill" placeholder="Nhập hóa đơn (VD: 275)" />
+      <br />
+      <button onclick="calcTip()">Tính Tip</button>
+      <div class="msg" id="msg"></div>
+    </div>
+
+    <script>
+      function calcTip() {
+        const bill = Number(document.getElementById("bill").value);
+
+        const tip = bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
+
+        document.getElementById("msg").innerHTML =
+          `The bill was <b>${bill}</b>,<br>` +
+          `the tip was <b>${tip.toFixed(2)}</b>,<br>` +
+          `and the total value <b>${(bill + tip).toFixed(2)}</b>`;
+      }
+    </script>
+  </body>
+</html>

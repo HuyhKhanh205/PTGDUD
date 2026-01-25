@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Part 1 - Challenge #3: Gymnastics</title>
+
+  </head>
+  <body>
+    <div class="container">
+      <h2>Challenge #3: Đội Tuyển Thể Thao</h2>
+
+      <div class="team">
+        <h3> Dolphins</h3>
+        <input type="number" id="d1" />
+        <input type="number" id="d2" />
+        <input type="number" id="d3" />
+      </div>
+      <div class="team" style="margin-right: 0">
+        <h3> Koalas</h3>
+        <input type="number" id="k1"  />
+        <input type="number" id="k2"  />
+        <input type="number" id="k3"  />
+      </div>
+
+      <button onclick="checkWinner()">Tìm Đội Thắng (Bonus Rules)</button>
+      <div id="output">Kết quả </div>
+    </div>
+
+    <script>
+      function checkWinner() {
+        const d1 = Number(document.getElementById("d1").value);
+        const d2 = Number(document.getElementById("d2").value);
+        const d3 = Number(document.getElementById("d3").value);
+        const scoreDolphins = (d1 + d2 + d3) / 3;
+
+        const k1 = Number(document.getElementById("k1").value);
+        const k2 = Number(document.getElementById("k2").value);
+        const k3 = Number(document.getElementById("k3").value);
+        const scoreKoalas = (k1 + k2 + k3) / 3;
+
+        let result = `Điểm Dolphins: ${scoreDolphins.toFixed(1)} - Điểm Koalas: ${scoreKoalas.toFixed(1)}\n`;
+
+        if (scoreDolphins > scoreKoalas && scoreDolphins >= 100) {
+          result += " Dolphins win the trophy!";
+        } else if (scoreKoalas > scoreDolphins && scoreKoalas >= 100) {
+          result += " Koalas win the trophy!";
+        } else if (
+          scoreDolphins === scoreKoalas &&
+          scoreDolphins >= 100 &&
+          scoreKoalas >= 100
+        ) {
+          result += "Both win the trophy!";
+        } else {
+          result += "No one wins (Điểm thấp hơn đối thủ hoặc dưới 100).";
+        }
+
+        document.getElementById("output").innerText = result;
+      }
+    </script>
+  </body>
+</html>

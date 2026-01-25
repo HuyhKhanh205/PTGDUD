@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Part 2 - Challenge #1: Arrow Functions</title>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Challenge #1: Arrow Functions & Logic Gấp Đôi</h2>
+
+      <p>
+        <b>Dolphins:</b>
+        <input id="d1" /> <input id="d2" />
+        <input id="d3" />
+      </p>
+      <p>
+        <b>Koalas:</b>
+        <input id="k1" /> <input id="k2" />
+        <input id="k3" />
+      </p>
+
+      <button onclick="runGame()">Kiểm Tra Kết Quả</button>
+      <h3 id="res"></h3>
+    </div>
+
+    <script>
+      const calcAverage = (a, b, c) => (a + b + c) / 3;
+
+      const checkWinner = (avgDolphins, avgKoalas) => {
+        if (avgDolphins >= 2 * avgKoalas) {
+          return `Dolphins win (${avgDolphins.toFixed(1)} vs. ${avgKoalas.toFixed(1)})`;
+        } else if (avgKoalas >= 2 * avgDolphins) {
+          return `Koalas win (${avgKoalas.toFixed(1)} vs. ${avgDolphins.toFixed(1)})`;
+        } else {
+          return "No team wins... (Không ai gấp đôi điểm ai)";
+        }
+      };
+
+      function runGame() {
+        const avgDol = calcAverage(
+          Number(document.getElementById("d1").value),
+          Number(document.getElementById("d2").value),
+          Number(document.getElementById("d3").value),
+        );
+        const avgKoa = calcAverage(
+          Number(document.getElementById("k1").value),
+          Number(document.getElementById("k2").value),
+          Number(document.getElementById("k3").value),
+        );
+
+        document.getElementById("res").innerText = checkWinner(avgDol, avgKoa);
+      }
+    </script>
+  </body>
+</html>
