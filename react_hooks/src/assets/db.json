@@ -1,0 +1,8 @@
+{
+  "posts": [
+    { "id": 1, "title": "Học React", "author": "Tí" },
+    { "id": 2, "title": "Học API", "author": "Tèo" }
+  ],
+  "comments": [],
+  "profile": { "name": "User 1" }
+}

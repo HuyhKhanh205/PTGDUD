@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Review API với MockAPI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: #f8f9fa;
+      }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 20px;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      button {
+        padding: 10px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .btn-get {
+        background: #3498db;
+      }
+      .btn-get:hover {
+        background: #2980b9;
+      }
+      .btn-post {
+        background: #2ecc71;
+      }
+      .btn-post:hover {
+        background: #27ae60;
+      }
+      .btn-put {
+        background: #f39c12;
+      }
+      .btn-put:hover {
+        background: #d35400;
+      }
+      .btn-delete {
+        background: #e74c3c;
+      }
+      .btn-delete:hover {
+        background: #c0392b;
+      }
+
+      .result-box {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 15px;
+        border-radius: 8px;
+        height: 400px;
+        overflow-y: auto;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+      .method-tag {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 12px;
+        margin-bottom: 5px;
+        color: #000;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>MockAPI Controller (Fetch & Axios)</h1>
+
+    <div class="grid-container">
+      <div class="card">
+        <h3>Dữ liệu</h3>
+        <div class="form-group">
+          <label>ID (Chỉ dùng cho Sửa/Xóa)</label>
+          <input type="text" id="inpId" placeholder="VD: 1, 2..." />
+        </div>
+        <div class="form-group">
+          <label>Name (Tên)</label>
+          <input type="text" id="inpName" placeholder="Nhập tên user..." />
+        </div>
+        <div class="form-group">
+          <label>Job (Công việc)</label>
+          <input type="text" id="inpJob" placeholder="Nhập công việc..." />
+        </div>
+
+        <div class="btn-group">
+          <button class="btn-get" onclick="handleFetch('GET')">
+            1. GET (Lấy tất cả)
+          </button>
+          <button class="btn-post" onclick="handleFetch('POST')">
+            2. POST (Thêm mới)
+          </button>
+          <button class="btn-put" onclick="handleFetch('PUT')">
+            3. PUT (Sửa theo ID)
+          </button>
+          <button class="btn-delete" onclick="handleFetch('DELETE')">
+            4. DELETE (Xóa theo ID)
+          </button>
+          <hr style="width: 100%; border: 0.5px solid #eee" />
+          <button style="background: #8e44ad" onclick="handleAxiosGet()">
+            5. Test Axios GET
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Console Log (Kết quả)</h3>
+        <div id="consoleLog" class="result-box">Waiting for action...</div>
+      </div>
+    </div>
+
+    <script>
+      const RESOURCE_NAME = "users";
+      const BASE_URL = `https://69831ac29c3efeb892a46b38.mockapi.io/${RESOURCE_NAME}`;
+
+      const logBox = document.getElementById("consoleLog");
+
+      function log(method, data) {
+        const time = new Date().toLocaleTimeString();
+        logBox.innerHTML =
+          `<span style="color: yellow">[${time}] ${method}</span>\n` +
+          JSON.stringify(data, null, 2) +
+          `\n\n--------------------\n\n` +
+          logBox.innerHTML;
+      }
+
+      function getInputs() {
+        return {
+          id: document.getElementById("inpId").value.trim(),
+          name: document.getElementById("inpName").value.trim(),
+          job: document.getElementById("inpJob").value.trim(),
+        };
+      }
+
+      async function handleFetch(method) {
+        const input = getInputs();
+        let url = BASE_URL;
+        let options = {
+          method: method,
+          headers: { "Content-Type": "application/json" },
+        };
+
+        if ((method === "PUT" || method === "DELETE") && !input.id) {
+          alert("Vui lòng nhập ID để thực hiện Sửa hoặc Xóa!");
+          return;
+        }
+
+        try {
+          if (method === "GET") {
+            delete options.body;
+          } else if (method === "POST") {
+            options.body = JSON.stringify({ name: input.name, job: input.job });
+          } else if (method === "PUT") {
+            url += `/${input.id}`;
+            options.body = JSON.stringify({ name: input.name, job: input.job });
+          } else if (method === "DELETE") {
+            url += `/${input.id}`;
+            delete options.body;
+          }
+
+          logBox.innerHTML =
+            `Đang gửi request ${method}...\n` + logBox.innerHTML;
+
+          const response = await fetch(url, options);
+
+          if (!response.ok) {
+            throw new Error(`Lỗi HTTP! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          log(`FETCH ${method} THÀNH CÔNG`, data);
+
+          if (method === "GET" && Array.isArray(data) && data.length > 0) {
+            document.getElementById("inpId").value = data[data.length - 1].id;
+          }
+        } catch (error) {
+          log(`LỖI FETCH ${method}`, error.message);
+        }
+      }
+
+      function handleAxiosGet() {
+        logBox.innerHTML = `Đang gửi request Axios...\n` + logBox.innerHTML;
+
+        axios
+          .get(BASE_URL)
+          .then((response) => {
+            log("AXIOS GET THÀNH CÔNG", response.data);
+          })
+          .catch((error) => {
+            log("LỖI AXIOS", error.message);
+          });
+      }
+    </script>
+  </body>
+</html>
